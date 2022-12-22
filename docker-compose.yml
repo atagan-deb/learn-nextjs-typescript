@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  front:
+    container_name: nextjs
+    image: nodejs-docker:1.0.0
+    # image: tmp:1
+    build:
+      context: .
+      target: dev
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - node_modules:/app/node_modules
+      - .:/app
+      # - .:/app
+    # command: sh -c "/bin/sh"
+volumes:
+  node_modules: {}

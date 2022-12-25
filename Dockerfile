@@ -1,9 +1,9 @@
 # FROM node:19.3.0-slim
 FROM node:19.3.0-slim as node
 FROM ubuntu:22.04 as base
-# ENV  NODE_ENV=production
 
 RUN apt-get update \
+    && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 EXPOSE 3000
 
@@ -28,6 +28,5 @@ COPY --chown=node:node package*.json yarn*.lock ./
 RUN npm ci --only=production && npm cache clean --force
 
 FROM base as dev
-# ENV NODE_ENV=development
 ENV PATH=/app/node_modules/.bin:$PATH
 RUN npm install --only=development && npm cache clean --force

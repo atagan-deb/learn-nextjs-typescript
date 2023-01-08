@@ -20,9 +20,9 @@
     "plugin:react/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
-    "airbnb",
-    "airbnb-typescript",
-    "airbnb/hooks",
+    // "airbnb",
+    // "airbnb-typescript",
+    // "airbnb/hooks",
     "prettier"
   ],
   "plugins": ["@typescript-eslint", "react", "unused-imports"],

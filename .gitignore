@@ -38,3 +38,4 @@ node_modules
 
 # storybook
 src/stories/assets
+storybook-static

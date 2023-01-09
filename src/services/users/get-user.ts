@@ -8,6 +8,12 @@ export type GetUserParams = {
   id: number;
 };
 
+/**
+ * ユーザーAPI（個別取得）
+ * @param context API
+ * @param params ユーザーID
+ * @returns ユーザー
+ */
 const getUser = async (
   context: ApiContext,
   { id }: GetUserParams,

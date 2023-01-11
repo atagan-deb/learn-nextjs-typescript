@@ -71,7 +71,7 @@ export type CSSPropertyJustifyItems =
   | 'stretch'
   | (string & {});
 
-  export type CSSPropertyJustifyContent =
+export type CSSPropertyJustifyContent =
   | CSSPropertyGlobals
   | ContentDistribution
   | ContentPosition
@@ -80,9 +80,57 @@ export type CSSPropertyJustifyItems =
   | 'right'
   | (string & {});
 
-  export type CSSPropertyFlexWrap =
+export type CSSPropertyFlexWrap =
   | CSSPropertyGlobals
   | 'nowrap'
   | 'wrap'
   | 'wrap-reverse'
   | (string & {});
+
+export type CSSPropertyFlexDirection =
+  | CSSPropertyGlobals
+  | 'column'
+  | 'column-reverse'
+  | 'row'
+  | 'row-reverse';
+
+export type CSSPropertyJustifySelf =
+  | CSSPropertyGlobals
+  | SelfPosition
+  | 'auto'
+  | 'baseline'
+  | 'left'
+  | 'normal'
+  | 'right'
+  | 'stretch'
+  | (string & {});
+
+export type CSSPropertyAlignSelf =
+  | CSSPropertyGlobals
+  | SelfPosition
+  | 'auto'
+  | 'baseline'
+  | 'normal'
+  | 'stretch'
+  | (string & {});
+
+/**
+ * Grid
+ */
+type GridLine = 'auto' | (string & {});
+
+export type CSSPropertyGridColumn =
+  | CSSPropertyGlobals
+  | GridLine
+  | (string & {});
+
+export type CSSPropertyGridRow = CSSPropertyGlobals | GridLine | (string & {});
+
+export type CSSPropertyGridAutoFlow =
+  | CSSPropertyGlobals
+  | 'column'
+  | 'dense'
+  | 'row'
+  | (string & {});
+
+export type CSSPropertyGridArea = CSSPropertyGlobals | GridLine | (string & {});

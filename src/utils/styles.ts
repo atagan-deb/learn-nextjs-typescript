@@ -27,6 +27,13 @@ const BREAKPOINTS: { [key: string]: string } = {
   xl: '1280px',
 };
 
+/**
+ * Responsive型をCSSプロパティとその値に変換
+ * @param propKey CSSプロパティ
+ * @param prop Responsive型
+ * @param theme AppTheme
+ * @returns CSSプロパティとその値 (ex. background-color: white;)
+ */
 export function toPropValue<T>(
   propKey: string,
   prop?: Responsive<T>,
@@ -81,6 +88,14 @@ const COLOR_KEYS = new Set(['color', 'background-color']);
 const FONT_SIZE_KEYS = new Set(['font-size']);
 const LETTER_SPACING_KEYS = new Set(['letter-spacing']);
 const LINE_HEIGHT_KEYS = new Set(['line-height']);
+
+/**
+ * Themeに指定されたCSSプロパティの値に変換
+ * @param propKey CSSプロパティ
+ * @param value CSSプロパティの値
+ * @param theme AppTheme
+ * @returns CSSプロパティの値
+ */
 function toThemeValueIfNeeded<T>(propKey: string, value: T, theme?: AppTheme) {
   if (
     theme &&
@@ -118,6 +133,7 @@ function toThemeValueIfNeeded<T>(propKey: string, value: T, theme?: AppTheme) {
   ) {
     return theme.lineHeights[value];
   }
+  return value;
 }
 function isResponsivePropType<T>(prop: any): prop is ResponsiveProp<T> {
   return (

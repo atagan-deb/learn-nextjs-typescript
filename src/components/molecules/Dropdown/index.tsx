@@ -73,3 +73,130 @@ const DropdownOption = styled.div`
     background-color: #f9f9f9;
   }
 `;
+
+interface DropdownItemProps {
+  item: DropdownItem;
+}
+
+const DropdownItem = (props: DropdownItemProps) => {
+  const { item } = props;
+
+  return (
+    <Flex alignItems="center">
+      <Text margin={0} variant="small">
+        {item.label ?? item.value}
+      </Text>
+    </Flex>
+  );
+};
+
+export interface DropdownItem {
+  value: string | number | null;
+  label?: string;
+}
+
+interface DropdownProps {
+  options: DropdownItem[];
+  value?: string | number;
+  name?: string;
+  placeholder?: string;
+  hasError?: boolean;
+  onChange?: (selected?: DropdownItem) => void;
+}
+
+const Dropdown = (props: DropdownProps) => {
+  const { onChange, name, value, options, hasError } = props;
+  const initialItem = options.find((i) => i.value === value);
+  const [isOpen, setIsOpenValue] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(initialItem);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleDocumentClick = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (dropdownRef.current) {
+        const els = dropdownRef.current.querySelectorAll('*');
+
+        for (let i = 0; i < els.length; i++) {
+          if (els[i] == e.target) {
+            return;
+          }
+        }
+      }
+      setIsOpenValue(false);
+    },
+    [dropdownRef],
+  );
+
+  const handleMouseDown = (e: React.SyntheticEvent) => {
+    setIsOpenValue((isOpen) => !isOpen);
+    e.stopPropagation();
+  };
+
+  const handleSelectValue = (
+    e: React.FormEvent<HTMLDivElement>,
+    item: DropdownItem,
+  ) => {
+    e.stopPropagation();
+    setSelectedItem(item);
+    setIsOpenValue(false);
+    onChange && onChange(item);
+  };
+
+  useEffect(() => {
+    // 画面外のクリックとタッチイベントを設定
+    document.addEventListener('click', handleDocumentClick, false);
+    document.addEventListener('touchend', handleDocumentClick, false);
+
+    return function cleanup() {
+      document.removeEventListener('click', handleDocumentClick, false);
+      document.removeEventListener('touchend', handleDocumentClick, false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <DropdownRoot ref={dropdownRef}>
+      <DropdownControl
+        hasError={hasError}
+        onMouseDown={handleMouseDown}
+        onTouchEnd={handleMouseDown}
+        data-test-id="dropdown-control"
+      >
+        {selectedItem && (
+          <DropdownValue>
+            <DropdownItem item={selectedItem} />
+          </DropdownValue>
+        )}
+        {/* 何も選択されていない時はプレースホルダーを表示 */}
+        {!selectedItem && (
+          <DropdownPlaceholder>{props?.placeholder}</DropdownPlaceholder>
+        )}
+        {/* ダミーinput */}
+        <input
+          type="hidden"
+          name={name}
+          value={selectedItem?.value ?? ''}
+          onChange={() => onChange && onChange(selectedItem)}
+        />
+        <DropdownArrow isOpen={isOpen} />
+      </DropdownControl>
+      {/* ドロップダウンを表示 */}
+      {isOpen && (
+        <DropdownMenu>
+          {options.map((item, idx) => (
+            <DropdownOption
+              key={idx}
+              onMouseDown={(e) => handleSelectValue(e, item)}
+              onClick={(e) => handleSelectValue(e, item)}
+              data-test-id="dropdown-option"
+            >
+              <DropdownItem item={item} />
+            </DropdownOption>
+          ))}
+        </DropdownMenu>
+      )}
+    </DropdownRoot>
+  );
+};
+
+export default Dropdown;
